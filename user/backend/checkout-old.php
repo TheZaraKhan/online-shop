@@ -18,7 +18,7 @@ $email;
 $stripe_data;
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
- 
+    
     if (isset($_SESSION["logged_user"])) {
         $name = $_SESSION["logged_user"]["name"];
         $logged_user_id = $_SESSION["logged_user"]["id"];
@@ -32,7 +32,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $total_price = $cart["total"];
     $stripe_data = initiateCheckout($total_price);
 
-    addtoOrderTable($stripe_data['session_id']);
+    addtoOrderTable($stripe_data['payment_id']);
     clearCart();
 
     echo json_encode([
@@ -44,7 +44,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
 function initiateCheckout($total_price)
 {
-    $YOUR_DOMAIN = "http://localhost:8081/user/";
+    $YOUR_DOMAIN = "http://localhost:8081/user/frontend/";
     $stripeSecretKey = "sk_test_51PUMPqDFkssOFOanuAzUEIqfH9N5S1BCJ9jAoSrNsoN64n0YjlgeAV6vLk74Pwyw8XP0yDHwibpMHNwAqrDYJk530041vNxkiZ";
 
     $stripe  = new \Stripe\StripeClient($stripeSecretKey);
@@ -62,18 +62,18 @@ function initiateCheckout($total_price)
             'quantity' => 1,
         ]],
         'mode' => 'payment',
-        'success_url' => $YOUR_DOMAIN . 'backend/success.php?session_id={CHECKOUT_SESSION_ID}',
+        'success_url' => $YOUR_DOMAIN . 'success.html',
         'cancel_url' => $YOUR_DOMAIN . 'cancel.html',
     ]);
 
     return [
         'url' => $session->url,
-        'session_id' => $session->id,
+        'payment_id' => $session->payment_intent, // Ensure this field captures the payment intent ID
     ];
 }
 
-// Checkout process function updates
-function addtoOrderTable($session_id) {
+function addtoOrderTable($payment_id)
+{
     global $connection, $cart, $logged_user_id, $total_price, $name;
 
     $address = isset($_POST['address']) ? $_POST['address'] : '';
@@ -83,35 +83,27 @@ function addtoOrderTable($session_id) {
 
     $user_id = $logged_user_id == null ? "NULL" : $logged_user_id;
 
-    $sql = "INSERT INTO orders (user_id, name, address, postal_code, city, email, total_price, session_id, payment_id, order_date, order_status) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, NULL, NOW(), 'pending')";
+    $sql = "INSERT INTO orders (user_id, name, address, postal_code, city, email, total_price, payment_id, order_date, order_status) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW(), 'pending')";
 
     $stmt = $connection->prepare($sql);
-    $stmt->bind_param("issssdsd", $user_id, $name, $address, $postcode, $city, $email, $total_price, $session_id);
+    $stmt->bind_param("issssdsd", $user_id, $name, $address, $postcode, $city, $email, $total_price, $payment_id);
     $stmt->execute();
 
     $order_id = $connection->insert_id;
 
-    // Store the order_id in session for later use
-    $_SESSION['order_id'] = $order_id;
-
     foreach ($cart as $prod_id => $product) {
-        if (is_array($product)) {
-            $quantity = isset($product["quantity"]) ? $product["quantity"] : 0;
-            $price = isset($product["price"]) ? $product["price"] : 0.0;
+        $quantity = $product["quantity"];
+        $price = $product["price"];
 
-            if ($price > 0.00) {
-                $sql = "INSERT INTO order_item (order_id, prod_id, quantity, price) VALUES (?, ?, ?, ?)";
-                $stmt = $connection->prepare($sql);
-                $stmt->bind_param("iiid", $order_id, $prod_id, $quantity, $price);
-                $stmt->execute();
-            }
+        if ($price > 0.00) {
+            $sql = "INSERT INTO order_item (order_id, prod_id, quantity, price) VALUES (?, ?, ?, ?)";
+            $stmt = $connection->prepare($sql);
+            $stmt->bind_param("iiid", $order_id, $prod_id, $quantity, $price);
+            $stmt->execute();
         }
     }
 }
-
-
-
 
 function clearCart()
 {

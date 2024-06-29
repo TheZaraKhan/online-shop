@@ -10,6 +10,9 @@ document.write('<script src="js/overlay.js"></script>');
 // cart
 document.write('<script src="js/cart.js"></script>');
 
+// checkout
+document.write('<script src="js/checkout.js"></script>');
+
 // catalogue
 document.write('<script src="js/catalogue.js"></script>');
 

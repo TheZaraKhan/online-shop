@@ -224,13 +224,14 @@ function productView() {
       "bg-cyan-800 text-white px-4 py-2 rounded hover:bg-cyan-600";
     button.addEventListener(
       "click",
-      addProductToCart.bind({
+      function () {
+        addProductToCart.call(this); // Call addProductToCart with the correct context
+      }.bind({
         id: this.id,
         name: this.name,
         price: this.price,
         image: this.image,
         stock: this.stock,
-        quantity: parseInt(quantityText.textContent), // Use the selected quantity
       })
     );
     button.addEventListener("click", () => {

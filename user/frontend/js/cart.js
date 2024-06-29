@@ -1,4 +1,6 @@
-document.addEventListener("DOMContentLoaded", updateCart);
+document.addEventListener("DOMContentLoaded", () => {
+  updateCart();
+});
 
 const localCart = {
   cart: null,
@@ -33,6 +35,7 @@ function responseUpdateCart(data) {
   localCart.total = total;
   localCart.length = count;
 
+  // showCart();
   //   console.log(cart, total, count);
 }
 
@@ -53,20 +56,21 @@ function addProductToCart() {
   })
     .then((response) => response.json())
     .then((data) => {
+      console.log("Backend response:", data);
       responseUpdateCart(data);
     })
     .catch((error) => {
       console.error("Error adding product to cart:", error);
     });
-
-  //   console.log(payload);
 }
 
 // show cart
 function showCart() {
   if (localCart.length === 0) {
     displayOverlay(cartEmpty());
-  } else displayOverlay(cartBox());
+  } else {
+    displayOverlay(cartBox());
+  }
 }
 
 // cart empty
@@ -284,110 +288,5 @@ function deleteProduct(id) {
     })
     .catch((error) => {
       console.error("Error deleting product:", error);
-    });
-}
-
-function checkout() {
-  console.log("show checkout");
-  // Handle checkout logic
-  displayOverlay(checkoutForm());
-}
-
-function checkoutForm() {
-  const form = document.createElement("form");
-
-  const header = document.createElement("h2");
-  header.textContent = "Checkout";
-  header.className = "text-2xl font-bold mb-6 text-center text-gray-800";
-
-  const address = document.createElement("input");
-  address.type = "text";
-  address.className = "w-full border border-gray-300 rounded py-2 px-3 mb-3";
-  address.placeholder = "Address";
-
-  const city = document.createElement("input");
-  city.type = "text";
-  city.className = "w-full border border-gray-300 rounded py-2 px-3 mb-3";
-  city.placeholder = "City";
-
-  const province = document.createElement("input");
-  province.type = "text";
-  province.className = "w-full border border-gray-300 rounded py-2 px-3 mb-3";
-  province.placeholder = "Province";
-
-  const postcode = document.createElement("input");
-  postcode.type = "text";
-  postcode.className = "w-full border border-gray-300 rounded py-2 px-3 mb-3";
-  postcode.placeholder = "Postcode";
-
-  const errorMsg = document.createElement("p");
-  errorMsg.className = "text-red-500";
-  errorMsg.style.display = "none";
-
-  const checkoutBtn = document.createElement("button");
-  checkoutBtn.className =
-    "bg-cyan-800 text-white py-2 px-5 mt-3 rounded hover:bg-cyan-600 transition-colors duration-300";
-  checkoutBtn.textContent = "Checkout";
-  checkoutBtn.type = "submit"; // Ensure this button does not submit the form
-
-  form.appendChild(header);
-  form.appendChild(address);
-  form.appendChild(city);
-  form.appendChild(province);
-  form.appendChild(postcode);
-  form.appendChild(errorMsg);
-  form.appendChild(checkoutBtn);
-
-  form.addEventListener("submit", sendCheckoutRequest);
-
-  fetch("http://localhost:8081/user/backend/login.php?q=check_status", {
-    method: "GET",
-    credentials: "include", // Include credentials to handle sessions
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      if (data.user) {
-        // User is logged in, no need to show additional fields
-        console.log("Logged in user:", data.user);
-      }
-      if (data.user === null) {
-        // User is a guest, show additional fields
-        const name = document.createElement("input");
-        name.type = "text";
-        name.className = "w-full border border-gray-300 rounded py-2 px-3 mb-3";
-        name.placeholder = "Full Name ";
-        form.insertBefore(name, address);
-
-        const email = document.createElement("input");
-        email.type = "email";
-        email.className =
-          "w-full border border-gray-300 rounded py-2 px-3 mb-3";
-        email.placeholder = "Email";
-        form.insertBefore(email, address);
-      }
-    })
-    .catch((error) => {
-      console.error("Error fetching user data:", error);
-    });
-
-  return form;
-}
-
-function sendCheckoutRequest(event) {
-  event.preventDefault();
-  const formdata = new FormData(this);
-
-  fetch("http://localhost:8081/user/backend/checkout.php", {
-    method: "POST",
-    body: formdata,
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      console.log(data);
-      // Handle response
-      console.log(data);
-    })
-    .catch((error) => {
-      console.error("Error sending checkout request:", error);
     });
 }
