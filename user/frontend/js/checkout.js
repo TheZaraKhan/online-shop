@@ -50,6 +50,7 @@ function checkoutForm() {
     "bg-cyan-800 text-white py-2 px-5 mt-3 rounded hover:bg-cyan-600 transition-colors duration-300";
   checkoutBtn.textContent = "Checkout";
   checkoutBtn.type = "submit";
+
   form.appendChild(header);
   form.appendChild(address);
   form.appendChild(city);
@@ -66,6 +67,8 @@ function checkoutForm() {
     for (const [key, value] of formData.entries()) {
       payload.append(key, value);
     }
+
+    console.log("Form Data Submitted:", payload.toString()); // Add this line for debugging
 
     fetch("http://localhost:8081/user/backend/checkout.php", {
       method: "POST",

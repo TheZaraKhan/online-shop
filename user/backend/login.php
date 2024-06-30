@@ -25,7 +25,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($row = $result->fetch_assoc()) {
         $_SESSION['logged_user'] = [
             'name' => $row['username'],
-            'id' => $row['id']
+            'id' => $row['id'],
+            'email' => $row['email']
+
         ];
 
         // Remove guest cart from session
