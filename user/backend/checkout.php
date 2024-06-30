@@ -66,8 +66,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 // Function to initiate Stripe checkout session
 function initiateCheckout($total_price)
 {
+    global $domain;
     // Replace with your actual domain and Stripe secret key
-    $YOUR_DOMAIN = "http://localhost:8081/user/";
+    $YOUR_DOMAIN = "$domain/user/";
     $stripeSecretKey = "sk_test_51PUMPqDFkssOFOanuAzUEIqfH9N5S1BCJ9jAoSrNsoN64n0YjlgeAV6vLk74Pwyw8XP0yDHwibpMHNwAqrDYJk530041vNxkiZ";
 
     // Initialize Stripe client

@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", requestBanners);
 
 function requestBanners() {
-  fetch("http://localhost:8081/user/backend/banner.php")
+  fetch(`${domain}user/backend/banners.php`)
     .then((res) => res.json())
     .then((data) => {
       // console.log(data);
@@ -11,7 +11,7 @@ function requestBanners() {
           const slide = document.createElement("div");
           slide.className =
             "swiper-slide align-text-bottom bg-center justify-end";
-          slide.style.backgroundImage = `url('http://localhost:8081/${banner.image}')`;
+          slide.style.backgroundImage = `url('${domain}/user/${banner.image}')`;
           slide.style.height = "50vh";
           const bannersection = document.querySelector(".swiper-wrapper");
 

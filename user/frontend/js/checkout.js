@@ -70,7 +70,7 @@ function checkoutForm() {
 
     console.log("Form Data Submitted:", payload.toString()); // Add this line for debugging
 
-    fetch("http://localhost:8081/user/backend/checkout.php", {
+    fetch(`${domain}/user/backend/checkout.php`, {
       method: "POST",
       body: payload,
     })
@@ -92,7 +92,7 @@ function checkoutForm() {
       });
   });
 
-  fetch("http://localhost:8081/user/backend/login.php?q=check_status", {
+  fetch(`${domain}/user/backend/login.php?q=check_status`, {
     method: "GET",
     credentials: "include",
   })

@@ -30,7 +30,7 @@ if ($session_id) {
             echo "Payment successful! Your payment ID is: " . $payment_intent_id;
 
             // Redirect to the success page
-            $redirect_url = "http://localhost:8081/#checkout-done";
+            $redirect_url = "$domain/#checkout-done";
             header("Location: $redirect_url");
             exit();
         } else {

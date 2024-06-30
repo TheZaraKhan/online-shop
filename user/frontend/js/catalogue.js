@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", requestProducts);
  */
 function requestProducts() {
   // Fetch products data from the server
-  fetch("http://localhost:8081/user/backend/catalogue.php")
+  fetch(`${domain}user/backend/catalogue.php`)
     .then((res) => res.json())
     .then((data) => {
       console.log(data);
@@ -51,7 +51,7 @@ function requestProductsbyCategory(category) {
     }
   });
   window.location.href = "#" + category; // Add category name to the URL
-  fetch(`http://localhost:8081/user/backend/catalogue.php?category=${category}`)
+  fetch(`${domain}/user/backend/login.php?category=${category}`)
     .then((res) => res.json())
     .then((data) => {
       console.log(data.categoryProducts);

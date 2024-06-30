@@ -3,7 +3,7 @@
 header('Access-Control-Allow-Origin: *');
 header("Access-Control-Allow-Origin: https://verenda.netlify.app");
 header("Access-Control-Allow-Credentials: true");
-
+$domain = "https://verenda.netlify.app";
 // use mysqli to fetch database (host, username, password, dbname)
  $connection = new mysqli("localhost:8889", "root", "root", "myshop");
 

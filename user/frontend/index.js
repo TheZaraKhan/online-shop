@@ -1,3 +1,5 @@
+const domain = "https://verenda.netlify.app";
+
 // navlinks
 document.write('<script src="/user/frontend/js/nav.js"></script>');
 
