@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", requestBanners);
 
 function requestBanners() {
-  fetch(`${domain}user/backend/banners.php`)
+  fetch(`${domain}/user/backend/banners.php`)
     .then((res) => res.json())
     .then((data) => {
       // console.log(data);

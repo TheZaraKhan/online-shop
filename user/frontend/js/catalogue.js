@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", requestProducts);
  */
 function requestProducts() {
   // Fetch products data from the server
-  fetch(`${domain}user/backend/catalogue.php`)
+  fetch(`${domain}/user/backend/catalogue.php`)
     .then((res) => res.json())
     .then((data) => {
       console.log(data);

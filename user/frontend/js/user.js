@@ -86,7 +86,7 @@ function loginForm() {
     e.preventDefault(); // Prevent form from submitting the default way
     const form = document.querySelector(".login-form");
     const formData = new FormData(form);
-    fetch(`${domain}user/backend/login.php`, {
+    fetch(`${domain}/user/backend/login.php`, {
       method: "POST",
       mode: "cors",
       credentials: "include",
@@ -143,7 +143,7 @@ function loggedIn(user) {
 // Function to check login status
 function checkLoginStatus() {
   // Send a request to the server to check if the user is logged in
-  fetch(`${domain}user/backend/login.php`, {
+  fetch(`${domain}/user/backend/login.php`, {
     method: "GET",
     mode: "cors",
     credentials: "include",
@@ -237,7 +237,7 @@ function registerForm() {
     errorMsg.style.display = "none";
 
     const formData = new FormData(form);
-    fetch(`${domain}user/backend/register.php`, {
+    fetch(`${domain}/user/backend/register.php`, {
       method: "POST",
       mode: "cors",
       credentials: "include",
@@ -350,7 +350,7 @@ function userRegistered() {
 // -------------- register form end here ---------------
 // -------------- logout start here ---------------
 function logoutUser() {
-  fetch(`${domain}user/backend/logout.php`, {
+  fetch(`${domain}/user/backend/logout.php`, {
     method: "POST",
     mode: "cors",
     credentials: "include",

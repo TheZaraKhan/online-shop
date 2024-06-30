@@ -9,7 +9,7 @@ const localCart = {
 };
 
 function updateCart() {
-  fetch(`${domain}user/backend/cart.php`)
+  fetch(`${domain}/user/backend/cart.php`)
     .then((response) => response.json())
     .then((data) => {
       responseUpdateCart(data);
@@ -50,7 +50,7 @@ function addProductToCart() {
   payload.append("stock", this.stock);
   payload.append("quantity", quantity);
 
-  fetch(`${domain}user/backend/cart.php`, {
+  fetch(`${domain}/user/backend/cart.php`, {
     method: "POST",
     body: payload,
   })
@@ -253,7 +253,7 @@ function updateItemTotal(quantity, id) {
 
   //   console.log(payload, id);
 
-  fetch(`${domain}user/backend/cart.php`, {
+  fetch(`${domain}/user/backend/cart.php`, {
     method: "PATCH",
     body: payload,
   })
@@ -276,7 +276,7 @@ updateQuantity = (data) => {
 function deleteProduct(id) {
   const payload = new URLSearchParams();
   payload.append("id", id);
-  fetch(`${domain}user/backend/cart.php`, {
+  fetch(`${domain}/user/backend/cart.php`, {
     method: "DELETE",
     body: payload,
   })
